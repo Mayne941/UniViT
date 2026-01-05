@@ -16,19 +16,10 @@ def fasta_split(fasta, n=100) -> list:
     return [fasta[i:i + n] for i in range(0, len(fasta), n)]
 
 def main(config):
-    outdir_stem = config["FullDir"]
-    in_fname = f"{outdir_stem}/extraced_orfs.fasta"
-    if not os.path.exists(outdir_stem):
-        os.mkdir(outdir_stem)
-    outdir = f"{outdir_stem}/orfs/"
-    if not os.path.exists(outdir):
-        os.mkdir(outdir)
-    if not os.path.exists(f"{outdir_stem}/interpro_xml/"):
-        os.mkdir(f"{outdir_stem}/interpro_xml/")
-    out_fname = f"{outdir}/extraced_orfs_split_.fasta"
+    out_fname = f"{config['OrfsDir']}/extraced_orfs_split_.fasta"
 
     '''Process'''
-    clean_fasta = clean(read_fa(in_fname))
+    clean_fasta = clean(read_fa(f'{config["OrfsDir"]}/extraced_orfs.fasta'))
     split_fastas = fasta_split(clean_fasta, n=100)
 
     '''Tidy, save'''

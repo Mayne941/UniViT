@@ -81,11 +81,20 @@ def prepare_output(out_dir):
     with open(f"{out_dir}/helicase_seqs.fasta", "w") as f:
         [f.write(f">{i[0]}\n{i[1]}\n") for i in helicase]
 
+def main(config):
+    '''Process'''
+    for idx, fpath in enumerate(files):
+        parse_xml(f"{config['XmlDir']}/{fpath}", idx)
+    prepare_output(config["ParsedXmlDir"])
+
+    '''Tidy'''
+    os.remove(TEMPFILE)
+
 
 if __name__ == "__main__":
-    '''Init'''
-    in_dir = "./tmp/interpro_xml/"
-    out_dir = "./tmp/interpro_parsed/"
+    '''Init''' # TODO dev only
+    in_dir = "./tmp/xml/"
+    out_dir = "./tmp/xml_parsed/"
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
     files = os.listdir(in_dir)

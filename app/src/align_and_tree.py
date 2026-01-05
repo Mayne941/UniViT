@@ -1,12 +1,5 @@
 import os
 from app.utils.shell_utils import shell
-'''
-mafft --auto --thread 8 rdrp_seqs.fasta > rdrp_seqs_aligned.fasta
-mafft --auto --thread 8 helicase_seqs.fasta > helicase_seqs_aligned.fasta
-
-fasttree rdrp_seqs_aligned.fasta > rdrp_seqs_tree.nwk
-fasttree helicase_seqs_aligned.fasta > helicase_seqs_tree.nwk
-'''
 
 def align(in_dir, out_dir, gene):
     '''Align sequences'''
@@ -17,6 +10,12 @@ def build_tree(in_dir, out_dir, gene):
     '''Build tree from aligned sequences'''
     shell(f"fasttree {out_dir}/{gene}_seqs_aligned.fasta > {out_dir}/{gene}_fasttree.nwk")
     print(f"Finished building tree for {gene}")
+
+def main(config):
+    for gene in config["HallmarkGenes"]:
+        align(config["ParsedXmlDir"], config["OutputDir"], gene)
+        build_tree(config["ParsedXmlDir"], config["OutputDir"], gene)
+
 
 if __name__ == "__main__":
     '''Init'''

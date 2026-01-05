@@ -17,6 +17,7 @@ Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene se
 1. Create conda environment. ```$ conda create -n univit python=3.10```
 1. Activate conda environment. ```$ conda activate univit```
 1. Install pip libraries. ```$ pip install -U -r requirements.txt```
+1. Install following libraries via conda (flag '-c bioconda'): mafft (>=7.525), fasttree (>=2.2.0)
 1. Install GRAViTy-V2, ColabFold Local, Fold_Tree from source. Defer to documentation for each tool for instructions.
 1. (Optional) Pull InterProScan Docker container and your choice of database.
 
@@ -24,7 +25,7 @@ Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene se
 
 1. Activate conda environment. ```$ conda activate univit```
 1. Create a GRAViTy-V2 VMR-like document. Defer to GRAViTy-V2 documentation. Must contain at least these fields:
-    * "Virus name(s)" -- This is the name for each sequence that will propagate through all experiments
+    * "Virus name(s)" -- This is the name for each sequence that will propagate through all experiments. New/unclassified sequences should be prefixed with "UNCLASSIFIED".
     * "Virus GENBANK accession" -- This will be used to label all sequences and pull from NCBI, if user sequences are not provided.
 1. Create a UniViT command config file (blank example is included in ./data/examples/example_univit_config.json). At least the following fields must be edited:
     * "ExperimentName" -- a new folder with this name will be generated ({ExperimentDir}/{ExperimentName}) and all output will be saved here.
@@ -36,9 +37,6 @@ Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene se
     * If running InterProScan locally, your command will look something like this. ```$ docker run --rm -w $PWD -v $PATH-TO-INTERPRO-DATABASE -input $PATH-TO-ORFS-FASTA -b $PATH-TO-EXP-DIR/xml -f XML```. This step can be automated by making a shell call in app/entrypoint.py. N.b. be mindful to call iteratively or concatenate input if you have >1 input fasta files! 
     * If using the web UI, use the UniViT helper function to split ORFS into fasta files with length == 100 sequences. Download XML files for each response and place in {ExperimentDir}/xml 
 1. Call the next UniVit script. ```$ python3 -m app.analysis``` 
-
-
-
 
 
 ## To do list 

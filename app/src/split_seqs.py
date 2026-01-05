@@ -1,5 +1,4 @@
 import os
-
 from app.utils.fasta_utils import read_fa
 
 
@@ -29,9 +28,25 @@ def split_unclassified(in_dir, gene, just_classified_dir, just_unclassified_dir)
         for fa in classified:
             f.write(f"{fa[0]}\n{fa[1]}\n")
 
+def main(config):
+    singles_dir = f"{config['OutputDir']}/singles/"
+    if not os.path.exists(singles_dir):
+        os.mkdir(singles_dir)
+    just_classified_dir = f"{config['OutputDir']}/just_classified/"
+    if not os.path.exists(just_classified_dir):
+        os.mkdir(just_classified_dir)
+    just_unclassified_dir = f"{config['OutputDir']}/just_unclassified/"
+    if not os.path.exists(just_unclassified_dir):
+        os.mkdir(just_unclassified_dir)
+
+    '''Process'''
+    for gene in config["HallmarkGenes"]:
+        make_single_seqs(gene, singles_dir, config["ParsedXmlDir"])
+        split_unclassified(config["ParsedXmlDir"], gene, just_classified_dir, just_unclassified_dir)
+
 
 if __name__ == "__main__":
-    '''Init'''
+    '''Init''' # TODO dev only
     genes = ["rdrp", "helicase"]
     in_dir = "./tmp/interpro_parsed/"
     out_dir = "./tmp/processed_output/"

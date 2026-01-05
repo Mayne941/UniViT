@@ -13,12 +13,21 @@ def create_exp_dirs(config):
 
     if not os.path.exists(f'{config["FullDir"]}/orfs'):
         os.mkdir(f'{config["FullDir"]}/orfs')
+        config["OrfsDir"] = f'{config["FullDir"]}/orfs'
 
     if not os.path.exists(f'{config["FullDir"]}/xml'):
         os.mkdir(f'{config["FullDir"]}/xml')
+        config["XmlDir"] = f'{config["FullDir"]}/xml'
+
+    if not os.path.exists(f'{config["FullDir"]}/xml_parsed'):
+        os.mkdir(f'{config["FullDir"]}/xml_parsed')
+        config["ParsedXmlDir"] = f'{config["FullDir"]}/xml_parsed'
 
     if not os.path.exists(f'{config["FullDir"]}/processed_output'):
         os.mkdir(f'{config["FullDir"]}/processed_output')
+        config["OutputDir"] = f'{config["FullDir"]}/processed_output'
+
+    return config
 
 
 def get_gravity_parameters(config):
