@@ -28,8 +28,7 @@ def save_output(df, in_dir):
     df.index = df["name"]
     df.to_csv(f"{in_dir}/data_nona_withnames.csv")
 
-    # genes = ["rdrp", "helicase"] # TODO inhert these
-    genes = ["rdrp", "helicase"]
+    genes = ["rdrp", "helicase"] # TODO inhert these
     for gene in genes:
         seqs = df[["name", f"{gene}_domain_seq"]].values.tolist()
         with open(f"{in_dir}/{gene}_seqs.fasta", "w") as f:

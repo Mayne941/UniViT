@@ -1,4 +1,4 @@
-# UniViT pipeline
+# UniViT
 ## Description
 A universal virus taxonomy pipeline combining hallmark gene alignment, structural comparisons with ColabFold and genomic analysis with GRAViTy-V2.
 
@@ -6,19 +6,39 @@ First described in:
 
 Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene sequence, genomic and structural analysis of Picornavirales viruses clarifies new and existing taxa. *biorXiv preprint* XX DOI TO FOLLOW XX
 
-**N.b. Pipeline is currently in an alpha state. This means that setup, runtime and output are incomplete and prone to change. 
+**N.b. This software is currently in an alpha state. This means that setup, runtime and output may be buggy and are liable to change as development progresses. Bioinformatics expertise is required to install UniViT and its dependencies, for which no support is currently provided.**
 
 ## Usage Guidelines
-Current pipeline:
+### Setup
+**UniViT was designed for Debian-based Linux. Instructions assume running Ubuntu >22.04. Modifications will be required for other flavours of Linux and Darwin.**
+1. Ensure Anaconda/Miniconda are installed.
+1. Create conda environment. ```$ conda create -n univit python=3.10```
+1. Activate conda environment. ```$ conda activate univit```
+1. Install pip libraries. ```$ pip install -U -r requirements.txt```
+1. Install GRAViTy-V2, ColabFold Local, Fold_Tree and optionally, InterPro Scan to your local environment. Defer to documentation for each tool for instructions.
 
-0. conda activate gvc
-1. Make GRAViTy-V2 compatible VMR with accessions and virus names as minimum fields (put "UNCLASSIFIED" in relevant virus names)
-2. Run GRAViTy-V2 to pull sequences, make ORFs and estimate phylogeny
-3. Extract ORFs, chunk into fastas  (app.src.split_orfs) > tmp/orfs
-5. Run ORFs on InterPro, download xml files > tmp/interpro_xml
-6. Run InterPro result parser (app.src.parse_xml) > tmp/interpro_parsed
-7. Join original virus names to InterPro output (app.src.rename_seqs) > tmp/interpro_parsed/
-8. Split seqs into classified/unclassified, and RdRps to single sequences for input to ColabFold (app.src.split_seqs) > ./tmp/processed_output
+### Run pipeline
+
+1. Activate conda environment. ```$ conda activate univit```
+1. Create a GRAViTy-V2 VMR-like document. Defer to GRAViTy-V2 documentation. Must contain at least these fields:
+    * "Virus name(s)" -- This is the name for each sequence that will propagate through all experiments
+    * "Virus GENBANK accession" -- This will be used to label all sequences and pull from NCBI, if user sequences are not provided.
+1. Create a UniViT command config file (blank example is included in ./data/examples/example_univit_config.json). At least the following fields must be edited:
+    * "ExperimentName" -- a new folder with this name will be generated ({ExperimentDir}/{ExperimentName}) and all output will be saved here.
+    * "InputData" -- path to input GRAViTy-V2 VMR-like document.
+    * "HallmarkGenes" -- list of (lowercase) strings for each hallmark gene to create a phylogeny from; names MUST correspond with their designation from InterPro Scan as these are used to parse matching domains from output. 
+1. Start a GRAViTy-V2 server. Default config expects this to broadcast on ```http://127.0.0.1:8000``` .
+
+
+
+
+1. Make GRAViTy-V2 compatible VMR with accessions and virus names as minimum fields (put "UNCLASSIFIED" in relevant virus names to mark with red text in GRAViTy output.)
+1. Run GRAViTy-V2 to pull sequences, make ORFs and estimate phylogeny
+1. Extract ORFs, chunk into fastas  (app.src.split_orfs) > tmp/orfs
+1. Run ORFs on InterPro, download xml files > tmp/interpro_xml
+1. Run InterPro result parser (app.src.parse_xml) > tmp/interpro_parsed
+1. Join original virus names to InterPro output (app.src.rename_seqs) > tmp/interpro_parsed/
+1. Split seqs into classified/unclassified, and RdRps to single sequences for input to ColabFold (app.src.split_seqs) > ./tmp/processed_output
 
 -> GRAViTy just RdRp PPHMMs
 * Copy all rdrps to gravity folder
@@ -36,14 +56,19 @@ Current pipeline:
 
 9. Copy output from each analysis to output folder. Remove spaces from fasta headers
 
-TODO 
-1. Download & automate interpro; adapt script to remove 100 seq split thing
-2. Move output to experiment folder
-3. More filtering in the rename bit to remove genome completeness, "MAG:" etc.
+## To do list 
+1. Automate interpro call; deprecate requirement for splitting sequences into runs of 100.
+1. Move output to experiment folder
+1. More filtering in the rename bit to remove genome completeness, "MAG:" etc.
+1. API call for GRAViTy-V2
+1. Script calling all functions.
+1. Wrap in API.
+1. Create example data.
+1. Create github wiki.
 
 ## Change log
 ### Version 0
-1. Initial push
+1. Init
 
 ## Disclaimer
 The material embodied in this software is provided to you "as-is", “with all faults”, and without warranty of any kind, express, implied or otherwise, including without limitation, any warranty of fitness for a particular purpose, warranty of non-infringement, or warranties of any kind concerning the safety, suitability, lack of viruses, inaccuracies, or other harmful components of this software. There are inherent dangers in the use of any software, and you are solely responsible for determining whether this software is compatible with your equipment and other software installed on your equipment. You are convert_fasta_to_genbankalso solely responsible for the protection of your equipment and backup of your data, and the developers/providers will not be liable for any damages you may suffer in connection with using, modifying, or distributing this software. Without limiting the foregoing, the developers/providers make no warranty that: the software will meet your requirements; the software will be uninterrupted, timely, secure, or error-free; the results that may be obtained from the use of the software will be effective, accurate, or reliable; the quality of the software will meet your expectations; any errors in the software will be identified or corrected.

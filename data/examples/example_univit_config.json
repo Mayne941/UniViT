@@ -1,0 +1,9 @@
+{
+    "ExperimentName": "CHANGE_ME",
+    "ExperimentDir": "./",
+    "InputData": "my_vmr.csv",
+    "GravityBroadcast": "http://127.0.0.1:8000",
+    "GravityGenbankFile": "NONE",
+    "GravityCustomParameters": "NONE",
+    "HallmarkGenes": ["rdrp", "helicase"]
+}
