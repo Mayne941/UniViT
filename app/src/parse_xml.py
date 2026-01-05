@@ -64,7 +64,7 @@ def parse_xml(file_path, idx):
 def prepare_output(out_dir):
     data = p.load(open(TEMPFILE, "rb"))
     df = pd.DataFrame.from_dict(data, orient="index")
-    breakpoint()
+    df.to_csv(f"{out_dir}/data_raw.csv")
     df_allfields = df.dropna()
     df_allfields.to_csv(f"{out_dir}/data_nona.csv")
 

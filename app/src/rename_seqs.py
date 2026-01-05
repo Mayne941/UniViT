@@ -29,7 +29,7 @@ def save_output(df, in_dir):
     df.to_csv(f"{in_dir}/data_nona_withnames.csv")
 
     # genes = ["rdrp", "helicase"] # TODO inhert these
-    genes = ["rdrp"]
+    genes = ["rdrp", "helicase"]
     for gene in genes:
         seqs = df[["name", f"{gene}_domain_seq"]].values.tolist()
         with open(f"{in_dir}/{gene}_seqs.fasta", "w") as f:
@@ -38,7 +38,7 @@ def save_output(df, in_dir):
 if __name__ == "__main__":
     '''Init'''
     in_dir = "./tmp/interpro_parsed/"
-    infile = f"{in_dir}/data_nona.csv"
+    infile = f"{in_dir}/data_nona_withnames.csv"
     gbfile = f"{in_dir}/genbank_sequences.gb"
 
     '''Collect data'''
