@@ -15,3 +15,4 @@ if __name__ == "__main__":
     split_seqs_main(config)
     align_and_tree_main(config)
     call_colabfold_main(config)
+    # Rename colabfold to match gravity 
