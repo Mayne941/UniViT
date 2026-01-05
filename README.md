@@ -4,7 +4,7 @@ A universal virus taxonomy pipeline combining hallmark gene alignment, structura
 
 First described in: 
 
-Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene sequence, genomic and structural analysis of Picornavirales viruses clarifies new and existing taxa. *biorXiv preprint* XX DOI TO FOLLOW XX
+Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene sequence, genomic and structural analysis of Picornavirales viruses clarifies new and existing taxa. *biorXiv preprint* https://doi.org/10.64898/2026.01.05.697625 
 
 *N.b. 1. This software is currently in an alpha state. This means that setup, runtime and output may be buggy and are liable to change as development progresses. It is nontrivial for users without bioinformatics expertise to install UniViT and its dependencies in its current state, and consequently it is not recommended to pull or install this software unless the user fully understands the instructions and is prepared to interact with the codebase. Full developer support and user guidance will be provided as the software evolves.*
 
