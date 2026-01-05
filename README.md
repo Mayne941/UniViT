@@ -6,16 +6,19 @@ First described in:
 
 Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene sequence, genomic and structural analysis of Picornavirales viruses clarifies new and existing taxa. *biorXiv preprint* XX DOI TO FOLLOW XX
 
-**N.b. This software is currently in an alpha state. This means that setup, runtime and output may be buggy and are liable to change as development progresses. Bioinformatics expertise is required to install UniViT and its dependencies, for which no support is currently provided.**
+*N.b. 1. This software is currently in an alpha state. This means that setup, runtime and output may be buggy and are liable to change as development progresses. It is nontrivial for users without bioinformatics expertise to install UniViT and its dependencies in its current state, and consequently it is not recommended to pull or install this software unless the user fully understands the instructions and is prepared to interact with the codebase. Full developer support and user guidance will be provided as the software evolves.*
+
+*N.b. 2. UniViT is designed to work on high-end personal computers. It is highly unlikely to work efficiently, if at all, on a PC with <32 Gb RAM or a CUDA-enabled discrete GPU.*
 
 ## Usage Guidelines
 ### Setup
-**UniViT was designed for Debian-based Linux. Instructions assume running Ubuntu >22.04. Modifications will be required for other flavours of Linux and Darwin.**
-1. Ensure Anaconda/Miniconda are installed.
+**UniViT was designed for Debian-based Linux. Instructions assume running Ubuntu >22.04. Modifications will be required for other flavours of Linux and Darwin. Running UniViT in native Windows will require technical wizardry.**
+1. Install Anaconda/Miniconda, Curl and Docker are installed. Defer to documentation for each tool for instructions.
 1. Create conda environment. ```$ conda create -n univit python=3.10```
 1. Activate conda environment. ```$ conda activate univit```
 1. Install pip libraries. ```$ pip install -U -r requirements.txt```
-1. Install GRAViTy-V2, ColabFold Local, Fold_Tree and optionally, InterPro Scan to your local environment. Defer to documentation for each tool for instructions.
+1. Install GRAViTy-V2, ColabFold Local, Fold_Tree from source. Defer to documentation for each tool for instructions.
+1. (Optional) Pull InterProScan Docker container and your choice of database.
 
 ### Run pipeline
 
@@ -28,33 +31,15 @@ Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene se
     * "InputData" -- path to input GRAViTy-V2 VMR-like document.
     * "HallmarkGenes" -- list of (lowercase) strings for each hallmark gene to create a phylogeny from; names MUST correspond with their designation from InterPro Scan as these are used to parse matching domains from output. 
 1. Start a GRAViTy-V2 server. Default config expects this to broadcast on ```http://127.0.0.1:8000``` .
+1. Call the UniVit entrypoint and point to the UniViT command config file when prompted. This will run GRAViTy-V2, as well as extract ORFs from each sequence for downstream processing. ```$ python3 -m app.preprocess```
+1. EITHER run ({ExperimentDir}/orfs/extracted_orfs.fasta) through InterProScan using local OR web UI. By default UniViT splits your input ORFs into batches, i.e. individual fasta files with length == 100.
+    * If running InterProScan locally, your command will look something like this. ```$ docker run --rm -w $PWD -v $PATH-TO-INTERPRO-DATABASE -input $PATH-TO-ORFS-FASTA -b $PATH-TO-EXP-DIR/xml -f XML```. This step can be automated by making a shell call in app/entrypoint.py. N.b. be mindful to call iteratively or concatenate input if you have >1 input fasta files! 
+    * If using the web UI, use the UniViT helper function to split ORFS into fasta files with length == 100 sequences. Download XML files for each response and place in {ExperimentDir}/xml 
+1. Call the next UniVit script. ```$ python3 -m app.analysis``` 
 
 
 
 
-1. Make GRAViTy-V2 compatible VMR with accessions and virus names as minimum fields (put "UNCLASSIFIED" in relevant virus names to mark with red text in GRAViTy output.)
-1. Run GRAViTy-V2 to pull sequences, make ORFs and estimate phylogeny
-1. Extract ORFs, chunk into fastas  (app.src.split_orfs) > tmp/orfs
-1. Run ORFs on InterPro, download xml files > tmp/interpro_xml
-1. Run InterPro result parser (app.src.parse_xml) > tmp/interpro_parsed
-1. Join original virus names to InterPro output (app.src.rename_seqs) > tmp/interpro_parsed/
-1. Split seqs into classified/unclassified, and RdRps to single sequences for input to ColabFold (app.src.split_seqs) > ./tmp/processed_output
-
--> GRAViTy just RdRp PPHMMs
-* Copy all rdrps to gravity folder
-* Run genbank converter
-* Run sequence detail getter
-* Start run, with similarity scheme = P
--> GRAViTy refined run (use tmp/interpro_parsed/data_nona_withnames.csv)
-* Use VMR-like document from just RdRp PPHMM run
-* Full GRAViTy run
--> ColabFold (split RdRp sequences, XXX)
-* Transfer seqs to alphafold dir
-* Run colabfold (automate)
-* Rename pdb seqs with fasta headers (rename_fasta)
--> Conventional alignments (app.src.align_and_tree) ./tmp/processed_output
-
-9. Copy output from each analysis to output folder. Remove spaces from fasta headers
 
 ## To do list 
 1. Automate interpro call; deprecate requirement for splitting sequences into runs of 100.
