@@ -13,12 +13,12 @@ Mayne, R., Smith, DB., Brown, K., *et al.* (2026) Comprehensive hallmark gene se
 ## Usage Guidelines
 ### Setup
 **UniViT was designed for Debian-based Linux. Instructions assume running Ubuntu >22.04. Modifications will be required for other flavours of Linux and Darwin. Running UniViT in native Windows will require technical wizardry.**
-1. Install Anaconda/Miniconda, Curl and Docker are installed. Defer to documentation for each tool for instructions.
+1. Install Anaconda/Miniconda, Curl and Docker are installed.fDefer to documentation for each tool for instructions.
 1. Create conda environment. ```$ conda create -n univit python=3.10```
 1. Activate conda environment. ```$ conda activate univit```
 1. Install pip libraries. ```$ pip install -U -r requirements.txt```
 1. Install following libraries via conda (flag '-c bioconda'): mafft (>=7.525), fasttree (>=2.2.0)
-1. Install GRAViTy-V2, ColabFold Local, Fold_Tree from source. Defer to documentation for each tool for instructions.
+1. Install GRAViTy-V2, ColabFold Local, Fold_Tree from source. Defer to documentation for each tool for instructions. Ensure all builds and aliases exist within your univit conda environment.
 1. (Optional) Pull InterProScan Docker container and your choice of database.
 
 ### Run pipeline

@@ -11,21 +11,20 @@ def create_exp_dirs(config):
     if not os.path.exists(config["FullDir"]):
         os.mkdir(config["FullDir"])
 
-    if not os.path.exists(f'{config["FullDir"]}/orfs'):
-        os.mkdir(f'{config["FullDir"]}/orfs')
-        config["OrfsDir"] = f'{config["FullDir"]}/orfs'
+    dirs = {
+        "OrfsDir": f'{config["FullDir"]}/orfs',
+        "XmlDir": f'{config["FullDir"]}/xml',
+        "ParsedXmlDir": f'{config["FullDir"]}/xml_parsed',
+        "OutputDir": f'{config["FullDir"]}/processed_output',
+        "ColabFoldDir": f'{config["FullDir"]}/colabfold',
+        "ColabFoldOutputDir": f'{config["FullDir"]}/colabfold_output',
+        "FoldTreeDir": f'{config["FullDir"]}/foldtree'
+    }
 
-    if not os.path.exists(f'{config["FullDir"]}/xml'):
-        os.mkdir(f'{config["FullDir"]}/xml')
-        config["XmlDir"] = f'{config["FullDir"]}/xml'
-
-    if not os.path.exists(f'{config["FullDir"]}/xml_parsed'):
-        os.mkdir(f'{config["FullDir"]}/xml_parsed')
-        config["ParsedXmlDir"] = f'{config["FullDir"]}/xml_parsed'
-
-    if not os.path.exists(f'{config["FullDir"]}/processed_output'):
-        os.mkdir(f'{config["FullDir"]}/processed_output')
-        config["OutputDir"] = f'{config["FullDir"]}/processed_output'
+    for dir_key, dir_path in dirs.items():
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
+            config[dir_key] = dir_path
 
     return config
 

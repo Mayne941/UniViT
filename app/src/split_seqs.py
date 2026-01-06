@@ -29,9 +29,9 @@ def split_unclassified(in_dir, gene, just_classified_dir, just_unclassified_dir)
             f.write(f"{fa[0]}\n{fa[1]}\n")
 
 def main(config):
-    singles_dir = f"{config['OutputDir']}/singles/"
-    if not os.path.exists(singles_dir):
-        os.mkdir(singles_dir)
+    config["OutputDirSingles"] = f"{config['OutputDir']}/singles/"
+    if not os.path.exists(config["OutputDirSingles"]):
+        os.mkdir(config["OutputDirSingles"])
     just_classified_dir = f"{config['OutputDir']}/just_classified/"
     if not os.path.exists(just_classified_dir):
         os.mkdir(just_classified_dir)
@@ -41,9 +41,10 @@ def main(config):
 
     '''Process'''
     for gene in config["HallmarkGenes"]:
-        make_single_seqs(gene, singles_dir, config["ParsedXmlDir"])
+        make_single_seqs(gene, config["OutputDirSingles"], config["ParsedXmlDir"])
         split_unclassified(config["ParsedXmlDir"], gene, just_classified_dir, just_unclassified_dir)
 
+    return config
 
 if __name__ == "__main__":
     '''Init''' # TODO dev only
@@ -67,3 +68,4 @@ if __name__ == "__main__":
     for gene in genes:
         make_single_seqs(gene, singles_dir, in_dir)
         split_unclassified(in_dir, gene, just_classified_dir, just_unclassified_dir)
+
